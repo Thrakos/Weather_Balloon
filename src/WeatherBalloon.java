@@ -11,7 +11,7 @@ public class WeatherBalloon {
 	WeatherBalloon() {
 
 		frame = new JFrame();
-		panel = new GamePanel();
+		panel = new GamePanel(WIDTH, HEIGHT);
 		
 	}
 	

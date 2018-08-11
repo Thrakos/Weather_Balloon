@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 public class Balloon {
 
 	int speed;
-	
+
 	int lane;
 	int prevLane;
 	int laneChange;
@@ -32,11 +32,13 @@ public class Balloon {
 
 		upDown = 0;
 		down = false;
-		
+
 		lane = 1;
 		prevLane = 1;
 
 		collisionBox = new Rectangle(x, y, width, height);
+		
+		isAlive = true;
 
 	}
 
@@ -45,18 +47,18 @@ public class Balloon {
 		if (prevLane != lane) {
 			movingLanes = true;
 		}
-		
+
 		if (!movingLanes) {
-			if (upDown < 350 && !down) {
-				if (upDown % 35 == 0) {
+			if (upDown < 450 && !down) {
+				if (upDown % 30 == 0) {
 					y++;
 				}
 				upDown++;
-				if (upDown == 350) {
+				if (upDown == 450) {
 					down = true;
 				}
 			} else if (upDown > 0 && down) {
-				if (upDown % 35 == 0) {
+				if (upDown % 30 == 0) {
 					y--;
 				}
 				upDown--;
@@ -66,28 +68,30 @@ public class Balloon {
 			}
 		} else {
 			if (prevLane > lane) {
-				if (laneChange < 175) {
+				if (laneChange < 350) {
+					if (laneChange % 2 == 0) {
+						y++;
+					}
 					laneChange++;
-					y++;
 				} else {
-					laneChange = 0;
-					lane--;
 					movingLanes = false;
+					laneChange = 0;
 				}
 			} else if (prevLane < lane) {
-				if (laneChange > -175) {
+				if (laneChange > -350) {
+					if (laneChange % 2 == 0) {
+						y--;
+					}
 					laneChange--;
-					y--;
 				} else {
-					laneChange = 0;
-					lane++;
 					movingLanes = false;
+					laneChange = 0;
 				}
 			}
 		}
 
 		collisionBox.setBounds(x, y, width, height);
-		
+
 		if (!movingLanes) {
 			prevLane = lane;
 		}
@@ -96,10 +100,12 @@ public class Balloon {
 
 	void draw(Graphics g) {
 
-		g.setColor(Color.WHITE);
-		g.fillOval(x, y, width, height);
-		g.drawArc((x + (width / 2)) - 5, y + height, 10, 40, 90, 180);
-		g.drawArc((x + (width / 2)) - 5, y + (height * 2) - 8, 10, 40, 90, -180);
+		if (isAlive) {
+			g.setColor(Color.WHITE);
+			g.fillOval(x, y, width, height);
+			g.drawArc((x + (width / 2)) - 5, y + height, 10, 40, 90, 180);
+			g.drawArc((x + (width / 2)) - 5, y + (height * 2) - 8, 10, 40, 90, -180);
+		}
 
 	}
 
