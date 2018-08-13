@@ -33,7 +33,6 @@ public class PineTree extends Obstacle {
 
 		if (isAlive) {
 			g.setColor(new Color(0, 110, 0));
-		//	g.fillRect(x, y, width, height - (height / 4));
 			int[] xPoints = {x + (width / 2), x + width, x};
 			int[] yPoints = {y, y + (height / 4) * 3, y + (height / 4) * 3};
 			g.fillPolygon(xPoints, yPoints, 3);
