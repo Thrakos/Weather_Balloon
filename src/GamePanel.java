@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -25,17 +26,26 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	final int LANE_ONE = 175;
 	final int LANE_TWO = 350;
 	final int LANE_THREE = 525;
-	
+
 	int level;
-	
+
 	int pixelsMoved;
-	
+
+	ArrayList<Weather> weather = new ArrayList<Weather>();
+
+	Wind wind;
+	JButton windUp;
+	JButton windDown;
+	int windPix = 0;
+	boolean useWind = false;
+	int returnWind = 0;
+
 	ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
-	
+
 	PineTree pineTree1;
 
 	GamePanel(int width, int height) {
-		
+
 		final int WIDTH = width;
 		final int HEIGHT = height;
 
@@ -44,13 +54,38 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		currentState = GAME_STATE; // change
 
 		b = new Balloon(100, 325, 40, 50);
-		
+
 		level = 1;
-		
-		
-		pineTree1 = new PineTree(WIDTH, HEIGHT - 450, 300, 450);
-		
+
+		wind = new Wind(10, 200, height - 60, 100, 40);
+		wind.isAlive = true;
+
+		windUp = new JButton();
+		windUp.addActionListener(this);
+		windUp.setBounds((WIDTH / 2) - 25, 20, 75, 40);
+		windUp.setText("up");
+		windUp.setVisible(false);
+		windDown = new JButton();
+		windDown.addActionListener(this);
+		windDown.setBounds((WIDTH / 2) - 25, HEIGHT - 100, 75, 40);
+		windDown.setText("down");
+		windDown.setVisible(false);
+
+		weather.add(wind);
+
+		pineTree1 = new PineTree(WIDTH, HEIGHT - 450, 200, 450);
+
 		obstacles.add(pineTree1);
+
+		for (int i = 0; i < weather.size(); i++) {
+			Weather w = weather.get(i);
+			w.addActionListener(this);
+		}
+
+		this.setLayout(null);
+		this.add(wind);
+		this.add(windUp);
+		this.add(windDown);
 
 	}
 
@@ -59,11 +94,47 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) { // timer
-		repaint();
-		if (currentState == GAME_STATE) {
-			updateGameState();
+	public void actionPerformed(ActionEvent e) { // timer
+
+		if (e.getSource() == timer) {
+			repaint();
+			if (currentState == GAME_STATE) {
+				updateGameState();
+			}
 		}
+
+		if (e.getSource() == wind) {
+			if (!b.movingLanes && wind.amount > 0 && windPix == 0) {
+				if (!useWind) {
+					windUp.setVisible(true);
+					windDown.setVisible(true);
+					useWind = true;
+				} else {
+					windUp.setVisible(false);
+					windDown.setVisible(false);
+					useWind = false;
+				}
+			}
+		}
+		if (e.getSource() == windUp) {
+			if (useWind) {
+				returnWind = 2;
+				useWind = false;
+				windUp.setVisible(false);
+				windDown.setVisible(false);
+				wind.amount--;
+			}
+		}
+		if (e.getSource() == windDown) {
+			if (useWind) {
+				returnWind = -2;
+				useWind = false;
+				windUp.setVisible(false);
+				windDown.setVisible(false);
+				wind.amount--;
+			}
+		}
+
 	}
 
 	public void paintComponent(Graphics g) {
@@ -89,40 +160,60 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		if (level == 1) {
 			levelOne();
 		}
+		
+		if (returnWind > 1 || returnWind < -1) {
+			returnWind = returnWind/2;
+			b.lane += (returnWind);
+		} else if (returnWind != 0) {
+			if (windPix == 1750) {
+				b.lane += (-returnWind);
+				windPix = 0;
+				returnWind = 0;
+			} else {
+				windPix++;
+			}
+		}
+		
 		updateObstacles();
 		b.update();
 		checkPop();
 
 	}
-	
+
 	void updateObstacles() {
-		
+
 		for (int i = 0; i < obstacles.size(); i++) {
 			Obstacle o = obstacles.get(i);
 			o.update();
 		}
-		
+
+		for (int i = 0; i < weather.size(); i++) {
+			Weather w = weather.get(i);
+			w.update();
+			w.setText(w.text + " (" + w.amount + ")");
+		}
+
 	}
-	
+
 	void checkPop() {
-		
+
 		for (int i = 0; i < obstacles.size(); i++) {
 			Obstacle o = obstacles.get(i);
 			if (b.collisionBox.intersects(o.collisionBox)) {
 				b.isAlive = false;
 			}
 		}
-		
+
 	}
-	
+
 	void levelOne() {
-		
+
 		if (pixelsMoved == 1000) {
 			pineTree1.isAlive = true;
 		}
-		
+
 		pixelsMoved++;
-				
+
 	}
 
 	@Override
@@ -156,23 +247,6 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-
-		if (e.getKeyCode() == KeyEvent.VK_L) {
-			System.out.println("lane: " + b.lane);
-		}
-
-		if (!b.movingLanes) {
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
-				if (b.lane != 2) {
-					b.lane++;
-				}
-			}
-			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				if (b.lane != 0) {
-					b.lane--;
-				}
-			}
-		}
 
 	}
 

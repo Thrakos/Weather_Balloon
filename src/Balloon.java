@@ -1,5 +1,7 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class Balloon {
@@ -100,7 +102,10 @@ public class Balloon {
 
 	void draw(Graphics g) {
 
+        Graphics2D g2 = (Graphics2D) g;
+		
 		if (isAlive) {
+			g2.setStroke(new BasicStroke(1));
 			g.setColor(Color.WHITE);
 			g.fillOval(x, y, width, height);
 			g.drawArc((x + (width / 2)) - 5, y + height, 10, 40, 90, 180);
