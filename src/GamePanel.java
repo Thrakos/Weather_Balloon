@@ -40,6 +40,11 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	boolean useWind = false;
 	int returnWind = 0;
 
+	Lightning lightning;
+	Obstacle lightninged = null;
+	boolean useLightning = false;
+	int lightningPix = 0;
+
 	ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 
 	PineTree pineTree1;
@@ -71,7 +76,11 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		windDown.setText("down");
 		windDown.setVisible(false);
 
+		lightning = new Lightning(10, 310, height - 60, 120, 40);
+		lightning.isAlive = true;
+
 		weather.add(wind);
+		weather.add(lightning);
 
 		pineTree1 = new PineTree(WIDTH, HEIGHT - 450, 200, 450);
 
@@ -87,6 +96,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		this.add(windUp);
 		this.add(windDown);
 
+		this.add(lightning);
+
 	}
 
 	void gameStart() {
@@ -94,7 +105,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) { // timer
+	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == timer) {
 			repaint();
@@ -109,6 +120,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 					windUp.setVisible(true);
 					windDown.setVisible(true);
 					useWind = true;
+
+					useLightning = false;
 				} else {
 					windUp.setVisible(false);
 					windDown.setVisible(false);
@@ -135,6 +148,28 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 			}
 		}
 
+		if (e.getSource() == lightning) {
+			if (lightning.amount > 0) {
+				if (!useLightning) {
+					useLightning = true;
+					for (int i = 0; i < obstacles.size(); i++) {
+						Obstacle w = obstacles.get(i);
+						if (w.lightning) {
+							w.outline = true;
+						}
+					}
+				} else {
+					useLightning = false;
+					for (int i = 0; i < obstacles.size(); i++) {
+						Obstacle w = obstacles.get(i);
+						if (w.lightning) {
+							w.outline = false;
+						}
+					}
+				}
+			}
+		}
+
 	}
 
 	public void paintComponent(Graphics g) {
@@ -145,7 +180,11 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 	void drawGameState(Graphics g) {
 
-		g.setColor(new Color(171, 224, 255));
+		if (!useLightning) {
+			g.setColor(new Color(171, 224, 255));
+		} else {
+			g.setColor(new Color(93, 143, 195));
+		}
 		g.fillRect(0, 0, 1000, 700);
 		for (int i = 0; i < obstacles.size(); i++) {
 			Obstacle o = obstacles.get(i);
@@ -160,9 +199,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		if (level == 1) {
 			levelOne();
 		}
-		
+
 		if (returnWind > 1 || returnWind < -1) {
-			returnWind = returnWind/2;
+			returnWind = returnWind / 2;
 			b.lane += (returnWind);
 		} else if (returnWind != 0) {
 			if (windPix == 1750) {
@@ -173,7 +212,26 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 				windPix++;
 			}
 		}
-		
+
+		if (lightninged == null) {
+			for (int i = 0; i < obstacles.size(); i++) {
+				Obstacle w = obstacles.get(i);
+				if (w.bam) {
+					lightningPix++;
+					lightninged = w;
+				}
+			}
+		} else {
+			if (lightningPix < 120) {
+				lightningPix++;
+			} else {
+				lightningPix = 0;
+				lightninged.isAlive = false;
+				useLightning = false;
+				lightninged = null;
+			}
+		}
+
 		updateObstacles();
 		b.update();
 		checkPop();
@@ -235,8 +293,20 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 
+		if (useLightning) {
+			for (int i = 0; i < obstacles.size(); i++) {
+				Obstacle w = obstacles.get(i);
+				if (w.lightning) {
+					if (e.getX() > w.x && e.getX() < (w.x + w.width)) {
+						if (e.getY() > w.y && e.getY() < (w.y + w.height)) {
+							w.bam = true;
+							lightning.amount--;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	@Override
