@@ -56,13 +56,15 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	int returnWind = 0;
 
 	Lightning lightning;
-	Obstacle lightninged = null;
+	Obstacle nullLight = new Obstacle();
+	Obstacle lightninged = nullLight;
 	boolean useLightning = false;
 	int lightningPix = 0;
 
 	ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 
 	PineTree pineTree1;
+	PineTree pineTree2;
 
 	GamePanel(int width, int height) {
 
@@ -98,8 +100,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		weather.add(lightning);
 
 		pineTree1 = new PineTree(WIDTH, HEIGHT - 450, 200, 450);
+		pineTree2 = new PineTree(WIDTH, HEIGHT - 450, 200, 450);
 
 		obstacles.add(pineTree1);
+		obstacles.add(pineTree2);
 
 		for (int i = 0; i < weather.size(); i++) {
 			Weather w = weather.get(i);
@@ -173,6 +177,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		}
 
 		if (e.getSource() == lightning) {
+			
 			if (lightning.amount > 0) {
 				if (!useLightning) {
 					useLightning = true;
@@ -284,7 +289,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 			}
 		}
 
-		if (lightninged == null) {
+		if (lightninged == nullLight) {
 			for (int i = 0; i < obstacles.size(); i++) {
 				Obstacle w = obstacles.get(i);
 				if (w.bam) {
@@ -296,10 +301,13 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 			if (lightningPix < 10) {
 				lightningPix++;
 			} else {
+								
 				lightningPix = 0;
 				lightninged.isAlive = false;
+				lightninged.x = -500;
+				obstacles.remove(lightninged);
 				useLightning = false;
-				lightninged = null;
+				lightninged = nullLight;
 
 			}
 		}
@@ -341,6 +349,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		if (pixelsMoved == 100) {
 			pineTree1.isAlive = true;
 		}
+		
+		if (pixelsMoved == 600) {
+			pineTree2.isAlive = true;
+		}
 
 		pixelsMoved++;
 
@@ -374,6 +386,16 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 						if (e.getY() > w.y && e.getY() < (w.y + w.height)) {
 							w.bam = true;
 							lightning.amount--;
+							
+							System.out.println("hello");
+							
+							for (int j = 0; j < obstacles.size(); j++) {
+								Obstacle x = obstacles.get(i);
+								if (x.lightning) {
+									x.outline = false;
+									System.out.println("hi again");
+								}
+							}
 
 							updateColor(currentColor, sky, BG_CHANGE_FRAMES);
 
