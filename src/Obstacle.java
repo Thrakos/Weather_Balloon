@@ -13,8 +13,6 @@ public class Obstacle {
 	int height;
 
 	int speed;
-	int slow;
-	int moved;
 
 	boolean lightning;
 
@@ -29,8 +27,6 @@ public class Obstacle {
 	Obstacle() {
 
 		isAlive = false;
-
-		moved = 0;
 
 	}
 

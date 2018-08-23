@@ -19,6 +19,14 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	final int LEVEL_SELECT = 0;
 	final int GAME_STATE = 1;
 
+	final int WIDTH = 1000;
+	final int HEIGHT = 700;
+
+	final int GROUND_HEIGHT = 40;
+
+	ArrayList<Building> buildings = new ArrayList<Building>();
+	Building building = new Building();
+	
 	int currentState;
 
 	Balloon b;
@@ -67,9 +75,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	PineTree pineTree2;
 
 	GamePanel(int width, int height) {
-
-		final int WIDTH = width;
-		final int HEIGHT = height;
+		
+		buildings.add(building);
 
 		timer = new Timer(1000 / 60, this);
 
@@ -177,7 +184,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		}
 
 		if (e.getSource() == lightning) {
-			
+
 			if (lightning.amount > 0) {
 				if (!useLightning) {
 					useLightning = true;
@@ -218,12 +225,26 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		updateBg(currentColor, targetColor);
 
 		g.setColor(currentColor);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
 
-		g.fillRect(0, 0, 1000, 700);
+		g.setColor(Color.gray);
+		g.fillRect(0, HEIGHT - GROUND_HEIGHT, 1000, GROUND_HEIGHT);
+
+//		if (pixelsMoved % 60 == 0) {
+//			Building building = new Building();
+//			buildings.add(building);
+//		}
+
+		for (int i = 0; i < buildings.size(); i++) {
+			Building w = buildings.get(i);
+			w.draw(g);
+		}
+
 		for (int i = 0; i < obstacles.size(); i++) {
 			Obstacle o = obstacles.get(i);
 			o.draw(g);
 		}
+
 		b.draw(g);
 
 	}
@@ -301,7 +322,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 			if (lightningPix < 10) {
 				lightningPix++;
 			} else {
-								
+
 				lightningPix = 0;
 				lightninged.isAlive = false;
 				lightninged.x = -500;
@@ -312,6 +333,12 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 			}
 		}
 
+		for (int i = 0; i < buildings.size(); i++) {
+			Building w = buildings.get(i);
+			if (w.x > -100) {
+				w.update();
+			}
+		}
 		updateObstacles();
 		b.update();
 		checkPop();
@@ -349,7 +376,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		if (pixelsMoved == 100) {
 			pineTree1.isAlive = true;
 		}
-		
+
 		if (pixelsMoved == 600) {
 			pineTree2.isAlive = true;
 		}
@@ -386,14 +413,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 						if (e.getY() > w.y && e.getY() < (w.y + w.height)) {
 							w.bam = true;
 							lightning.amount--;
-							
-							System.out.println("hello");
-							
 							for (int j = 0; j < obstacles.size(); j++) {
 								Obstacle x = obstacles.get(i);
 								if (x.lightning) {
 									x.outline = false;
-									System.out.println("hi again");
 								}
 							}
 

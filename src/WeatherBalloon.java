@@ -1,3 +1,5 @@
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 
 public class WeatherBalloon {
@@ -22,8 +24,9 @@ public class WeatherBalloon {
 
 	void setup() {
 		
-		frame.add(panel);
-		frame.setSize(WIDTH, HEIGHT);
+		frame.add(panel);		
+		frame.getContentPane().setPreferredSize(new Dimension(WIDTH - 20, HEIGHT - 10));
+		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.addMouseListener(panel);

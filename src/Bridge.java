@@ -10,9 +10,14 @@ public class Bridge extends Obstacle {
 
 		lightning = false;
 
-		speed = 1;
-		slow = 3;
+		speed = 3;
 
+	}
+	
+	void update() {
+		
+		super.update();
+		
 	}
 	
 }
