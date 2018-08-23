@@ -19,17 +19,19 @@ public class Building {
 	Random rand;
 
 	boolean top;
+	
+	int topType;
 
 	Building() {
 
 		y = 700 - 40;
-		x = 500;
+		x = 1000;
 
 		speed = 2;
 
 		rand = new Random();
 
-		stories = rand.nextInt(4) + 1;
+		stories = rand.nextInt(5) + 1;
 
 		top = rand.nextBoolean();
 
@@ -37,12 +39,18 @@ public class Building {
 		col *= 10;
 
 		color = new Color(110 + col, 110 + col, 110 + col);
+		
+		if (stories == 1) {
+			topType = 2;
+		} else {
+			topType = rand.nextInt(3);
+		}
 
 	}
 
 	void update() {
 		
-		//x -= speed;
+		x -= speed;
 
 	}
 
@@ -52,31 +60,30 @@ public class Building {
 
 		g.setColor(color);
 		
-		g.fillRect(x, y - 400, 100, 400);
+		System.out.println(topType);
+		
+		for (int i = 0; i < stories; i++) {
 
-//		for (int i = 0; i < stories; i++) {
-//
-//			g.fillRect(x, y + STORY_HEIGHT, 100, STORY_HEIGHT);
-//
-//		}
-//
-//		if (top) {
-//
-//			int topType = rand.nextInt(2);
-//
-//			if (topType == 0) {
-//				g2.setStroke(new BasicStroke(5));
-//				g.drawLine(50, y + (stories * STORY_HEIGHT), 50, y + (stories * STORY_HEIGHT) + 75);
-//			} else if (topType == 1) {
-//				g.fillOval(x, y + (stories * STORY_HEIGHT) + 50, 100, 100);
-//			} else if (topType == 2) {
-//				int[] xPoints = { x, x + 100, x + 50 };
-//				int[] yPoints = { y + (stories * STORY_HEIGHT), y + (stories * STORY_HEIGHT),
-//						y + (stories * STORY_HEIGHT) + 50 };
-//				g.fillPolygon(xPoints, yPoints, 3);
-//			}
-//
-//		}
+			g.fillRect(x, y - (STORY_HEIGHT * (i + 1)), 100, STORY_HEIGHT);
+
+		}
+
+		if (top) {
+
+			if (topType == 0) {
+				g2.setStroke(new BasicStroke(5));
+				g.drawLine(x + 50, y - (stories * STORY_HEIGHT), x + 50, y - (stories * STORY_HEIGHT) - 75);
+			} else if (topType == 1) {
+				System.out.println("oiwjef");
+				g.fillOval(x, y - (stories * STORY_HEIGHT) - 50, 100, 100);
+			} else if (topType == 2) {
+				int[] xPoints = { x, x + 100, x + 50 };
+				int[] yPoints = { y - (stories * STORY_HEIGHT), y - (stories * STORY_HEIGHT),
+						y - (stories * STORY_HEIGHT) - 50 };
+				g.fillPolygon(xPoints, yPoints, 3);
+			}
+
+		}
 
 	}
 

@@ -25,7 +25,6 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	final int GROUND_HEIGHT = 40;
 
 	ArrayList<Building> buildings = new ArrayList<Building>();
-	Building building = new Building();
 	
 	int currentState;
 
@@ -76,8 +75,6 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 	GamePanel(int width, int height) {
 		
-		buildings.add(building);
-
 		timer = new Timer(1000 / 60, this);
 
 		currentState = GAME_STATE; // change
@@ -230,10 +227,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		g.setColor(Color.gray);
 		g.fillRect(0, HEIGHT - GROUND_HEIGHT, 1000, GROUND_HEIGHT);
 
-//		if (pixelsMoved % 60 == 0) {
-//			Building building = new Building();
-//			buildings.add(building);
-//		}
+		if (pixelsMoved % 60 == 0) {
+			Building building = new Building();
+			buildings.add(building);
+		}
 
 		for (int i = 0; i < buildings.size(); i++) {
 			Building w = buildings.get(i);
@@ -329,6 +326,13 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 				obstacles.remove(lightninged);
 				useLightning = false;
 				lightninged = nullLight;
+				
+				for (int i = 0; i < obstacles.size(); i++) {
+					Obstacle w = obstacles.get(i);
+					if (w.lightning) {
+						w.outline = false;
+					}
+				}
 
 			}
 		}
@@ -413,15 +417,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 						if (e.getY() > w.y && e.getY() < (w.y + w.height)) {
 							w.bam = true;
 							lightning.amount--;
-							for (int j = 0; j < obstacles.size(); j++) {
-								Obstacle x = obstacles.get(i);
-								if (x.lightning) {
-									x.outline = false;
-								}
-							}
-
 							updateColor(currentColor, sky, BG_CHANGE_FRAMES);
-
 						}
 					}
 				}
