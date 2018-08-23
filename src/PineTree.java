@@ -18,8 +18,7 @@ public class PineTree extends Obstacle {
 
 		bam = false;
 
-		speed = 1;
-		slow = 3;
+		speed = 3;
 
 		collisionBox = new Rectangle(x + 30, y, (x + height) - 30, height);
 
@@ -34,10 +33,11 @@ public class PineTree extends Obstacle {
 	}
 
 	void draw(Graphics g) {
-
+		
 		super.draw(g);
 
 		if (isAlive) {
+				
 			g.setColor(new Color(0, 110, 0));
 			int[] xPoints = { x + (width / 2), x + width, x };
 			int[] yPoints = { y, y + (height / 4) * 3, y + (height / 4) * 3 };

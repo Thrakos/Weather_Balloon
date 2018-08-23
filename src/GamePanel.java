@@ -31,6 +31,19 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 	int pixelsMoved;
 
+	Color sky = new Color(171, 224, 255);
+	Color storm = new Color(93, 143, 195);
+	Color snow = new Color(213, 255, 255);
+	Color rain = new Color(79, 113, 160);
+
+	Color currentColor = sky;
+	
+	Color targetColor = sky;
+
+	private int rChange = 0;
+	private int gChange = 0;
+	private int bChange = 0;
+
 	ArrayList<Weather> weather = new ArrayList<Weather>();
 
 	Wind wind;
@@ -54,7 +67,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		final int WIDTH = width;
 		final int HEIGHT = height;
 
-		timer = new Timer(100 / 60, this);
+		timer = new Timer(1000 / 60, this);
 
 		currentState = GAME_STATE; // change
 
@@ -122,6 +135,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 					useWind = true;
 
 					useLightning = false;
+					
+					updateColor(currentColor, sky, 60);
+					
 				} else {
 					windUp.setVisible(false);
 					windDown.setVisible(false);
@@ -152,6 +168,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 			if (lightning.amount > 0) {
 				if (!useLightning) {
 					useLightning = true;
+
+					updateColor(currentColor, storm, 60);
+
 					for (int i = 0; i < obstacles.size(); i++) {
 						Obstacle w = obstacles.get(i);
 						if (w.lightning) {
@@ -160,6 +179,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 					}
 				} else {
 					useLightning = false;
+
+					updateColor(currentColor, sky, 60);
+
 					for (int i = 0; i < obstacles.size(); i++) {
 						Obstacle w = obstacles.get(i);
 						if (w.lightning) {
@@ -180,17 +202,58 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 	void drawGameState(Graphics g) {
 
-		if (!useLightning) {
-			g.setColor(new Color(171, 224, 255));
-		} else {
-			g.setColor(new Color(93, 143, 195));
-		}
+		updateBg(currentColor, targetColor);
+
+		g.setColor(currentColor);
+
 		g.fillRect(0, 0, 1000, 700);
 		for (int i = 0; i < obstacles.size(); i++) {
 			Obstacle o = obstacles.get(i);
 			o.draw(g);
 		}
 		b.draw(g);
+
+	}
+
+	void updateColor(Color c, Color d, int steps) {
+
+		if (steps > 0) {
+
+			rChange = (d.getRed()   - c.getRed())   / steps;
+			gChange = (d.getGreen() - c.getGreen()) / steps;
+			bChange = (d.getBlue()  - c.getBlue())  / steps;
+
+		}
+		
+		targetColor = d;
+
+	}
+
+	void updateBg(Color c, Color d) {
+
+		int newR = 0;
+		int newB = 0;
+		int newG = 0;
+
+		if (Math.abs(c.getRed() - d.getRed()) >= Math.abs(rChange)) {
+			newR = c.getRed() + rChange;
+		} else {
+			newR = d.getRed();
+		}
+
+		if (Math.abs(c.getGreen() - d.getGreen()) >= Math.abs(gChange)) {
+			newG = c.getGreen() + gChange;
+		} else {
+			newG = d.getGreen();
+		}
+
+		if (Math.abs(c.getBlue() - d.getBlue()) >= Math.abs(bChange)) {
+			newB = c.getBlue() + bChange;
+		} else {
+			newB = d.getBlue();
+		}
+
+		currentColor = new Color(newR, newG, newB);
 
 	}
 
@@ -204,7 +267,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 			returnWind = returnWind / 2;
 			b.lane += (returnWind);
 		} else if (returnWind != 0) {
-			if (windPix == 1750) {
+			if (windPix == 350) {
 				b.lane += (-returnWind);
 				windPix = 0;
 				returnWind = 0;
@@ -222,13 +285,14 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 				}
 			}
 		} else {
-			if (lightningPix < 120) {
+			if (lightningPix < 10) {
 				lightningPix++;
 			} else {
 				lightningPix = 0;
 				lightninged.isAlive = false;
 				useLightning = false;
 				lightninged = null;
+				
 			}
 		}
 
@@ -266,7 +330,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 	void levelOne() {
 
-		if (pixelsMoved == 1000) {
+		if (pixelsMoved == 100) {
 			pineTree1.isAlive = true;
 		}
 
@@ -302,6 +366,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 						if (e.getY() > w.y && e.getY() < (w.y + w.height)) {
 							w.bam = true;
 							lightning.amount--;
+							
+							updateColor(currentColor, sky, 60);
+
 						}
 					}
 				}

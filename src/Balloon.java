@@ -6,8 +6,6 @@ import java.awt.Rectangle;
 
 public class Balloon {
 
-	int speed;
-
 	int lane;
 	int prevLane;
 	int laneChange;
@@ -39,7 +37,7 @@ public class Balloon {
 		prevLane = 1;
 
 		collisionBox = new Rectangle(x, y, width, height);
-		
+
 		isAlive = true;
 
 	}
@@ -51,16 +49,16 @@ public class Balloon {
 		}
 
 		if (!movingLanes) {
-			if (upDown < 450 && !down) {
-				if (upDown % 30 == 0) {
+			if (upDown < 45 && !down) {
+				if (upDown % 3 == 0) {
 					y++;
 				}
 				upDown++;
-				if (upDown == 450) {
+				if (upDown == 45) {
 					down = true;
 				}
 			} else if (upDown > 0 && down) {
-				if (upDown % 30 == 0) {
+				if (upDown % 3 == 0) {
 					y--;
 				}
 				upDown--;
@@ -70,20 +68,16 @@ public class Balloon {
 			}
 		} else {
 			if (prevLane > lane) {
-				if (laneChange < 350) {
-					if (laneChange % 2 == 0) {
-						y++;
-					}
+				if (laneChange < 175 / 3) {
+					y += 3;
 					laneChange++;
 				} else {
 					movingLanes = false;
 					laneChange = 0;
 				}
 			} else if (prevLane < lane) {
-				if (laneChange > -350) {
-					if (laneChange % 2 == 0) {
-						y--;
-					}
+				if (laneChange > -175 / 3) {
+					y -= 3;
 					laneChange--;
 				} else {
 					movingLanes = false;
@@ -102,8 +96,8 @@ public class Balloon {
 
 	void draw(Graphics g) {
 
-        Graphics2D g2 = (Graphics2D) g;
-		
+		Graphics2D g2 = (Graphics2D) g;
+
 		if (isAlive) {
 			g2.setStroke(new BasicStroke(1));
 			g.setColor(Color.WHITE);

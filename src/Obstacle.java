@@ -37,10 +37,9 @@ public class Obstacle {
 	void update() {
 
 		if (isAlive) {
-			if (moved % slow == 0) {
-				x -= speed;
-			}
-			moved++;
+
+			x -= speed;
+
 		}
 
 	}
