@@ -37,12 +37,14 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	Color rain = new Color(79, 113, 160);
 
 	Color currentColor = sky;
-	
+
 	Color targetColor = sky;
 
 	private int rChange = 0;
 	private int gChange = 0;
 	private int bChange = 0;
+
+	final int BG_CHANGE_FRAMES = 30;
 
 	ArrayList<Weather> weather = new ArrayList<Weather>();
 
@@ -135,9 +137,15 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 					useWind = true;
 
 					useLightning = false;
-					
-					updateColor(currentColor, sky, 60);
-					
+					for (int i = 0; i < obstacles.size(); i++) {
+						Obstacle w = obstacles.get(i);
+						if (w.lightning) {
+							w.outline = false;
+						}
+					}
+
+					updateColor(currentColor, sky, BG_CHANGE_FRAMES);
+
 				} else {
 					windUp.setVisible(false);
 					windDown.setVisible(false);
@@ -169,7 +177,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 				if (!useLightning) {
 					useLightning = true;
 
-					updateColor(currentColor, storm, 60);
+					updateColor(currentColor, storm, BG_CHANGE_FRAMES);
 
 					for (int i = 0; i < obstacles.size(); i++) {
 						Obstacle w = obstacles.get(i);
@@ -180,7 +188,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 				} else {
 					useLightning = false;
 
-					updateColor(currentColor, sky, 60);
+					updateColor(currentColor, sky, BG_CHANGE_FRAMES);
 
 					for (int i = 0; i < obstacles.size(); i++) {
 						Obstacle w = obstacles.get(i);
@@ -219,12 +227,12 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 		if (steps > 0) {
 
-			rChange = (d.getRed()   - c.getRed())   / steps;
+			rChange = (d.getRed() - c.getRed()) / steps;
 			gChange = (d.getGreen() - c.getGreen()) / steps;
-			bChange = (d.getBlue()  - c.getBlue())  / steps;
+			bChange = (d.getBlue() - c.getBlue()) / steps;
 
 		}
-		
+
 		targetColor = d;
 
 	}
@@ -292,7 +300,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 				lightninged.isAlive = false;
 				useLightning = false;
 				lightninged = null;
-				
+
 			}
 		}
 
@@ -366,8 +374,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 						if (e.getY() > w.y && e.getY() < (w.y + w.height)) {
 							w.bam = true;
 							lightning.amount--;
-							
-							updateColor(currentColor, sky, 60);
+
+							updateColor(currentColor, sky, BG_CHANGE_FRAMES);
 
 						}
 					}
