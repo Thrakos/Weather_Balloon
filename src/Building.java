@@ -59,9 +59,7 @@ public class Building {
 		Graphics2D g2 = (Graphics2D) g;
 
 		g.setColor(color);
-		
-		System.out.println(topType);
-		
+				
 		for (int i = 0; i < stories; i++) {
 
 			g.fillRect(x, y - (STORY_HEIGHT * (i + 1)), 100, STORY_HEIGHT);
