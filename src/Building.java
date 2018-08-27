@@ -72,7 +72,6 @@ public class Building {
 				g2.setStroke(new BasicStroke(5));
 				g.drawLine(x + 50, y - (stories * STORY_HEIGHT), x + 50, y - (stories * STORY_HEIGHT) - 75);
 			} else if (topType == 1) {
-				System.out.println("oiwjef");
 				g.fillOval(x, y - (stories * STORY_HEIGHT) - 50, 100, 100);
 			} else if (topType == 2) {
 				int[] xPoints = { x, x + 100, x + 50 };
