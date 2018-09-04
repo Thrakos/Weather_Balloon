@@ -57,6 +57,8 @@ public class Bridge extends Obstacle {
 			g.fillRect(x + (width - 100), y + 250, 100, height - 250);
 
 		}
+		
+		// soijd
 
 	}
 
