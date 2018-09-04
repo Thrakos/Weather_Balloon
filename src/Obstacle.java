@@ -53,6 +53,10 @@ public class Obstacle {
 		}
 
 	}
+	
+	void drawTwo(Graphics g) {
+				
+	}
 
 	void lightning() {
 

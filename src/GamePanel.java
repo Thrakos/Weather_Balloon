@@ -69,9 +69,11 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	int lightningPix = 0;
 
 	ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
+	ArrayList<Obstacle> obstaclesTwo = new ArrayList<Obstacle>();
 
 	PineTree pineTree1;
 	PineTree pineTree2;
+	Bridge bridge1;
 
 	GamePanel(int width, int height) {
 		
@@ -105,9 +107,13 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 		pineTree1 = new PineTree(WIDTH, HEIGHT - 450, 200, 450);
 		pineTree2 = new PineTree(WIDTH, HEIGHT - 450, 200, 450);
+		bridge1 = new Bridge(WIDTH + 50, HEIGHT - 550, 500, 550);
 
 		obstacles.add(pineTree1);
 		obstacles.add(pineTree2);
+		obstacles.add(bridge1);
+		
+		obstaclesTwo.add(bridge1);
 
 		for (int i = 0; i < weather.size(); i++) {
 			Weather w = weather.get(i);
@@ -243,6 +249,11 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		}
 
 		b.draw(g);
+		
+		for (int i = 0; i < obstaclesTwo.size(); i++) {			
+			Obstacle f = obstaclesTwo.get(i);
+			f.drawTwo(g);
+		}
 
 	}
 
@@ -381,8 +392,13 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 			pineTree1.isAlive = true;
 		}
 
-		if (pixelsMoved == 600) {
+		if (pixelsMoved == 500) {
 			pineTree2.isAlive = true;
+		}
+		
+		if (pixelsMoved == 800) {
+			bridge1.isAlive = true;
+			System.out.println("bridge alive");
 		}
 
 		pixelsMoved++;
