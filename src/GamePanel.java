@@ -107,7 +107,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 		pineTree1 = new PineTree(WIDTH, HEIGHT - 450, 200, 450);
 		pineTree2 = new PineTree(WIDTH, HEIGHT - 450, 200, 450);
-		bridge1 = new Bridge(WIDTH + 50, HEIGHT - 550, 500, 550);
+		bridge1 = new Bridge(WIDTH + 200, HEIGHT - 200, 100, 200);
 
 		obstacles.add(pineTree1);
 		obstacles.add(pineTree2);
@@ -383,22 +383,25 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 				b.isAlive = false;
 			}
 		}
+		
+		if (b.collisionBox.intersects(bridge1.collisionBox)) {
+			b.isAlive = false;
+		}
 
 	}
 
 	void levelOne() {
 
-		if (pixelsMoved == 100) {
-			pineTree1.isAlive = true;
-		}
-
+//		if (pixelsMoved == 100) {
+//			pineTree1.isAlive = true;
+//		}
+//
 		if (pixelsMoved == 500) {
 			pineTree2.isAlive = true;
 		}
 		
-		if (pixelsMoved == 800) {
+		if (pixelsMoved == 100) {
 			bridge1.isAlive = true;
-			System.out.println("bridge alive");
 		}
 
 		pixelsMoved++;

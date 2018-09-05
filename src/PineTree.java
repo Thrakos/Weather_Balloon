@@ -26,18 +26,22 @@ public class PineTree extends Obstacle {
 
 	void update() {
 
-		super.update();
+		if (isAlive) {
 
-		collisionBox.setBounds(x + 30, y, (x + height) - 30, height);
+			super.update();
+
+			collisionBox.setBounds(x + 30, y, (x + height) - 30, height);
+
+		}
 
 	}
 
 	void draw(Graphics g) {
-		
+
 		super.draw(g);
 
 		if (isAlive) {
-				
+
 			g.setColor(new Color(0, 110, 0));
 			int[] xPoints = { x + (width / 2), x + width, x };
 			int[] yPoints = { y, y + (height / 4) * 3, y + (height / 4) * 3 };
