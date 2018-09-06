@@ -107,7 +107,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 		pineTree1 = new PineTree(WIDTH, HEIGHT - 450, 200, 450);
 		pineTree2 = new PineTree(WIDTH, HEIGHT - 450, 200, 450);
-		bridge1 = new Bridge(WIDTH + 200, HEIGHT - 200, 100, 200);
+		bridge1 = new Bridge(WIDTH + 224, HEIGHT - 200, 100, 200);
 
 		obstacles.add(pineTree1);
 		obstacles.add(pineTree2);

@@ -1,10 +1,13 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class Bridge extends Obstacle {
 
 	int backX;
+	int frontX;
 
 	Bridge(int x, int y, int width, int height) {
 
@@ -12,15 +15,15 @@ public class Bridge extends Obstacle {
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		
-		backX = x;
-	//	frontX = x;
+
+		backX = x - 250;
+		frontX = x + 250;
 
 		lightning = false;
 
 		speed = 3;
 
-		collisionBox = new Rectangle(x, 0, width, 350);
+		collisionBox = new Rectangle(x, 0, width, 450);
 
 	}
 
@@ -29,11 +32,14 @@ public class Bridge extends Obstacle {
 		if (isAlive) {
 
 			super.update();
-			
-	//		backX -= 2;
 
-			collisionBox.setBounds(x, 0, width, 350);
-			
+			frontX -= 1;
+			frontX -= speed;
+			backX += 1;
+			backX -= speed;
+
+			collisionBox.setBounds(x, 0, width, 450);
+
 		}
 
 	}
@@ -61,6 +67,8 @@ public class Bridge extends Obstacle {
 
 	void drawTwo(Graphics g) {
 
+		Graphics2D g2 = (Graphics2D) g;
+
 		if (isAlive) {
 
 //			int[] xPoints = { x + width, x + width + 50, x + width };
@@ -69,14 +77,34 @@ public class Bridge extends Obstacle {
 //			g.setColor(new Color(255, 15, 15));
 //			g.fillPolygon(xPoints, yPoints, 3);
 //			g.fillRect(x + (width - 100), y + 250, 100, height - 250);
-			
-	//		int[] bridgeX = { backX, backX - 10, x, x + width };
-			int [] bridgeX = {  };
-			int[] bridgeY = { y - height, y - height, 700, 700 };
-			
+
+			g2.setStroke(new BasicStroke(3));
+
 			g.setColor(new Color(255, 15, 15));
+
+			int[] bridgeX = { backX + (width / 2) + 2, backX + (width / 2) - 2, frontX - (width / 2) - 2,
+					frontX + width + (width / 2) };
+			int[] bridgeY = { y - height, y - height, 700, 700 };
+
 			g.fillPolygon(bridgeX, bridgeY, 4);
-			
+
+			g.setColor(new Color(255, 20, 20));
+			g.fillRect(x, y - 250, 10, 250);
+			g.fillRect(x + (width - 10), y - 250, 10, 250);
+
+			// x, y, width, height, start angle, arc angle
+			// > is 0, ^ is 90, < is 180, v is 270, arcAngle is relative to startAngle
+
+			// g2.drawArc(x, y, width, height, startAngle, arcAngle);
+
+			if (x > 500) {
+				g.drawOval(backX, backX, frontX, backX);
+			} else {
+				
+			}
+
+			// g.fillPolygon(bridgeX, bridgeY, 4);
+
 		}
 
 	}
