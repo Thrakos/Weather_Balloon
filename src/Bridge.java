@@ -84,9 +84,18 @@ public class Bridge extends Obstacle {
 
 			int[] bridgeX = { backX + (width / 2) + 2, backX + (width / 2) - 2, frontX - (width / 2) - 2,
 					frontX + width + (width / 2) };
-			int[] bridgeY = { y - height, y - height, 700, 700 };
+			int[] bridgeY = { y - height + 100, y - height + 100, 600, 600 };
 
+			// actual bridge
 			g.fillPolygon(bridgeX, bridgeY, 4);
+
+			int[] bridgeX2 = { frontX - (width / 2) - 2, frontX + width + (width / 2),
+					frontX + width + (width / 2), frontX - (width / 2) - 2 };
+			int[] bridgeY2 = { 600, 600, 700, 700 };
+
+			g.fillPolygon(bridgeX2, bridgeY2, 4);
+
+			// g.fillRect(frontX - (width/2) - 1, 600, (width * 2) + 1, 100);
 
 			g.setColor(new Color(255, 20, 20));
 			g.fillRect(x, y - 250, 10, 250);
