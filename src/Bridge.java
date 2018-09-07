@@ -97,11 +97,11 @@ public class Bridge extends Obstacle {
 
 			// g2.drawArc(x, y, width, height, startAngle, arcAngle);
 
-			if (x > 500) {
-				g.drawOval(backX, backX, frontX, backX);
-			} else {
-				
-			}
+//			if (x > 500) {
+//				g.drawOval(backX, backX, frontX, backX);
+//			} else {
+//				
+//			}
 
 			// g.fillPolygon(bridgeX, bridgeY, 4);
 
