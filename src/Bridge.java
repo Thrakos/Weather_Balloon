@@ -88,7 +88,8 @@ public class Bridge extends Obstacle {
 
 			// actual bridge
 			g.fillPolygon(bridgeX, bridgeY, 4);
-
+			
+			// front addition to bridge
 			int[] bridgeX2 = { frontX - (width / 2) - 2, frontX + width + (width / 2),
 					frontX + width + (width / 2), frontX - (width / 2) - 2 };
 			int[] bridgeY2 = { 600, 600, 700, 700 };

@@ -37,6 +37,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	int level;
 
 	int pixelsMoved;
+	
+	
+	// BG COLOR
 
 	Color sky = new Color(171, 224, 255);
 	Color storm = new Color(93, 143, 195);
@@ -46,6 +49,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	Color currentColor = sky;
 
 	Color targetColor = sky;
+	
+	int cloud = 0;
 
 	private int rChange = 0;
 	private int gChange = 0;
@@ -53,6 +58,16 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 	final int BG_CHANGE_FRAMES = 30;
 
+	//CLOUDS
+	
+	Cloud c1 = new Cloud(100, 20, 1);
+	Cloud c2 = new Cloud(300, 50, 2);
+	Cloud c3 = new Cloud(500, 30, 3);
+	
+	ArrayList<Cloud> clouds = new ArrayList<Cloud>();
+	
+	// WEATHERS
+	
 	ArrayList<Weather> weather = new ArrayList<Weather>();
 
 	Wind wind;
@@ -67,6 +82,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	Obstacle lightninged = nullLight;
 	boolean useLightning = false;
 	int lightningPix = 0;
+	
+	
+	// OBSTACLES
 
 	ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 	ArrayList<Obstacle> obstaclesTwo = new ArrayList<Obstacle>();
@@ -237,6 +255,18 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 			Building building = new Building();
 			buildings.add(building);
 		}
+		
+		//draw sun and clouds and whatnot
+		
+		g.setColor(new Color(155, 220, 20, 255));
+		g.fillOval(812, 62, 100, 100);
+		
+		g.setColor(new Color(255, 220, 20, 150));
+		g.fillOval(800, 50, 125, 125);
+		
+
+		//stop drawing sun and clouds and whatnot
+		//look at me commenting! Look at me GO!
 
 		for (int i = 0; i < buildings.size(); i++) {
 			Building w = buildings.get(i);
