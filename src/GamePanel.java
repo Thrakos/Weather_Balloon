@@ -102,6 +102,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		b = new Balloon(100, 325, 40, 50);
 
 		level = 1;
+		
+		clouds.add(c1);
+		clouds.add(c2);
+		clouds.add(c3);
 
 		wind = new Wind(10, 200, height - 60, 100, 40);
 		wind.isAlive = true;
@@ -264,6 +268,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		g.setColor(new Color(255, 220, 20, 150));
 		g.fillOval(800, 50, 125, 125);
 		
+		for (int i = 0; i < clouds.size(); i++) {
+			Cloud w = clouds.get(i);
+			w.draw(g);
+		}
 
 		//stop drawing sun and clouds and whatnot
 		//look at me commenting! Look at me GO!
@@ -378,6 +386,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 			}
 		}
 
+		for (Cloud w : clouds) {
+			w.update();
+		}
+		
 		for (int i = 0; i < buildings.size(); i++) {
 			Building w = buildings.get(i);
 			if (w.x > -100) {
