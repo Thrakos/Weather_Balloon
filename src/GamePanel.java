@@ -91,6 +91,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	boolean useLightning = false;
 	int lightningPix = 0;
 	
+	Sun sun;
+	boolean useSun = false;
 	
 	// OBSTACLES
 
@@ -111,10 +113,14 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 		level = 1;
 		
+		//CLOUDS
+		
 		clouds.add(c1);
 		clouds.add(c2);
 		clouds.add(c3);
 
+		//WEATHERS
+		
 		wind = new Wind(10, 200, height - 60, 100, 40);
 		wind.isAlive = true;
 
@@ -131,9 +137,13 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 		lightning = new Lightning(10, 310, height - 60, 120, 40);
 		lightning.isAlive = true;
+		
+		sun = new Sun(10, 440, height - 60, 100, 40);
+		sun.isAlive = true;
 
 		weather.add(wind);
 		weather.add(lightning);
+		weather.add(sun);
 
 		pineTree1 = new PineTree(WIDTH, HEIGHT - 450, 200, 450);
 		pineTree2 = new PineTree(WIDTH, HEIGHT - 450, 200, 450);
@@ -154,6 +164,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		this.add(wind);
 		this.add(windUp);
 		this.add(windDown);
+		this.add(sun);
 
 		this.add(lightning);
 
@@ -166,6 +177,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
+		//update
 		if (e.getSource() == timer) {
 			repaint();
 			if (currentState == GAME_STATE) {
@@ -173,6 +185,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 			}
 		}
 
+		//wind
 		if (e.getSource() == wind) {
 			if (!b.movingLanes && wind.amount > 0 && windPix == 0) {
 				if (!useWind) {
@@ -216,6 +229,8 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 			}
 		}
 
+		
+		//lightning!
 		if (e.getSource() == lightning) {
 
 			if (lightning.amount > 0) {
@@ -244,8 +259,22 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 				}
 			}
 		}
+		
+		//Sun!
+		if (e.getSource() == sun) {
+			
+			if (sun.amount > 0) {
+				
+				if (false) {
+					// SO CONFUZZLED
+				}
+				
+			}
+			
+		}
 
 	}
+	
 
 	public void paintComponent(Graphics g) {
 		if (currentState == GAME_STATE) {
