@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Random;
 
 // MR Z. REQUIRES SHINY OBJECTS
 
@@ -12,14 +13,9 @@ public class Cloud {
 	int move;
 	int floomp;
 	boolean floop;
+	Random rand = new Random();
 
 	int type;
-
-	Color color;
-
-	Color storm = new Color(120, 120, 120);
-	Color rain = new Color(150, 150, 150);
-	Color sun = new Color(255, 255, 255);
 
 	Cloud(int x, int y, int type) {
 
@@ -28,12 +24,14 @@ public class Cloud {
 
 		this.type = type;
 
-		color = sun;
-
 		speed = 1;
 		move = 0;
-		floomp = 0;
-		floop = true;
+		floomp = rand.nextInt(36);
+		if (rand.nextInt(2) % 2 == 0) {
+			floop = true;
+		} else {
+			floop = false;
+		}
 
 	}
 
@@ -50,12 +48,11 @@ public class Cloud {
 		if (x < -120) {
 			x = 1050;
 		}
-		
 
 		// move up and down
 		if (floop) {
-			if (floomp < 40) {
-				if (floomp % 4 == 0) {
+			if (floomp < 72) {
+				if (floomp % 8 == 0) {
 					y++;
 				}
 				floomp++;
@@ -64,7 +61,7 @@ public class Cloud {
 			}
 		} else {
 			if (floomp > 0) {
-				if (floomp % 4 == 0) {
+				if (floomp % 8 == 0) {
 					y--;
 				}
 				floomp--;
@@ -75,17 +72,33 @@ public class Cloud {
 
 	}
 
-	void draw(Graphics g) {
+	void draw(Graphics g, Color color) {
+
+		g.setColor(color);
 
 		if (type == 1) {
-
-			g.setColor(color);
 
 			g.fillOval(x, y, 90, 90);
 			g.fillOval(x + 50, y + 25, 75, 60);
 			g.fillOval(x - 30, y + 10, 60, 50);
 			g.fillOval(x + 65, y + 5, 40, 40);
 			g.fillOval(x - 15, y + 45, 90, 50);
+
+		} else if (type == 2) {
+
+			g.fillOval(x, y, 90, 70);
+			g.fillOval(x + 60, y + 20, 60, 40);
+			g.fillOval(x + 50, y, 50, 40);
+			g.fillOval(x - 20, y + 10, 50, 30);
+			g.fillOval(x - 10, y + 30, 40, 30);
+
+		} else {
+
+			g.fillOval(x, y, 100, 80);
+			g.fillOval(x + 60, y + 20, 70, 50);
+			g.fillOval(x + 55, y + 5, 50, 30);
+			g.fillOval(x - 30, y, 80, 50);
+			g.fillOval(x - 20, y + 30, 50, 40);
 
 		}
 

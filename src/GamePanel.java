@@ -61,10 +61,18 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	//CLOUDS
 	
 	Cloud c1 = new Cloud(100, 20, 1);
-	Cloud c2 = new Cloud(300, 50, 2);
-	Cloud c3 = new Cloud(500, 30, 3);
+	Cloud c2 = new Cloud(500, 80, 2);
+	Cloud c3 = new Cloud(800, 40, 3);
 	
 	ArrayList<Cloud> clouds = new ArrayList<Cloud>();
+	
+	//CLOUD COLORS
+	
+	Color cloudStorm = new Color(120, 120, 120);
+	Color cloudRain = new Color(150, 150, 150);
+	Color cloudSun = new Color(255, 255, 255);
+	
+	Color cloudCol = cloudSun;
 	
 	// WEATHERS
 	
@@ -270,7 +278,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		
 		for (int i = 0; i < clouds.size(); i++) {
 			Cloud w = clouds.get(i);
-			w.draw(g);
+			w.draw(g, cloudCol);
 		}
 
 		//stop drawing sun and clouds and whatnot
@@ -488,8 +496,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -499,8 +506,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
