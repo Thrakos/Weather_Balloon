@@ -43,8 +43,6 @@ public class Balloon {
 	}
 
 	void update() {
-		
-		System.out.println(lane);
 
 		if (prevLane != lane) {
 			movingLanes = true;

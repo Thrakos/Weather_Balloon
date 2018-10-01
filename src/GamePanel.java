@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -102,6 +103,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 	PineTree pineTree1;
 	PineTree pineTree2;
 	Bridge bridge1;
+	Bridge bridge2;
 
 	GamePanel(int width, int height) {
 		
@@ -121,7 +123,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
 		//WEATHERS
 		
-		wind = new Wind(10, 200, height - 60, 100, 40);
+		wind = new Wind(2, 200, height - 60, 100, 40);
 		wind.isAlive = true;
 
 		windUp = new JButton();
@@ -135,7 +137,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		windDown.setText("down");
 		windDown.setVisible(false);
 
-		lightning = new Lightning(10, 310, height - 60, 120, 40);
+		lightning = new Lightning(2, 310, height - 60, 120, 40);
 		lightning.isAlive = true;
 		
 		sun = new Sun(10, 440, height - 60, 100, 40);
@@ -148,12 +150,15 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		pineTree1 = new PineTree(WIDTH, HEIGHT - 450, 200, 450);
 		pineTree2 = new PineTree(WIDTH, HEIGHT - 450, 200, 450);
 		bridge1 = new Bridge(WIDTH + 224, HEIGHT - 230, 100, 230);
+		bridge2 = new Bridge(WIDTH + 224, HEIGHT - 230, 100, 230);
 
 		obstacles.add(pineTree1);
 		obstacles.add(pineTree2);
 		obstacles.add(bridge1);
+		obstacles.add(bridge2);
 		
 		obstaclesTwo.add(bridge1);
+		obstaclesTwo.add(bridge2);
 
 		for (int i = 0; i < weather.size(); i++) {
 			Weather w = weather.get(i);
@@ -264,10 +269,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 		if (e.getSource() == sun) {
 			
 			if (sun.amount > 0) {
-				
-				if (false) {
-					// SO CONFUZZLED
-				}
+//				
+//				if (false) {
+//					// SO CONFUZZLED
+//				}
 				
 			}
 			
@@ -462,10 +467,6 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 				b.isAlive = false;
 			}
 		}
-		
-		if (b.collisionBox.intersects(bridge1.collisionBox)) {
-			b.isAlive = false;
-		}
 
 	}
 
@@ -475,12 +476,24 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 //			pineTree1.isAlive = true;
 //		}
 //
-		if (pixelsMoved == 500) {
+		if (pixelsMoved == 600) {
 			pineTree2.isAlive = true;
 		}
 		
 		if (pixelsMoved == 100) {
 			bridge1.isAlive = true;
+		}
+		
+		if (pixelsMoved == 900) {
+			pineTree1.isAlive = true;
+		}
+		
+		if (pixelsMoved == 1200) {
+			bridge2.isAlive = true;
+		}
+		
+		if (pixelsMoved == 1700) {
+			JOptionPane.showMessageDialog(null, "YOU BEAT THE EASIEST PUZZLE!");
 		}
 
 		pixelsMoved++;
