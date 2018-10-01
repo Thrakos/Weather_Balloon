@@ -492,7 +492,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 			bridge2.isAlive = true;
 		}
 		
-		if (pixelsMoved == 1700) {
+		if (pixelsMoved == 1700 && b.isAlive) {
 			JOptionPane.showMessageDialog(null, "YOU BEAT THE EASIEST PUZZLE!");
 		}
 
